@@ -27,6 +27,8 @@ model.fit(X_train, y_train)
 
 app = dash.Dash('mi_app')
 
+
+## Estas es la parte del front
 app.layout = html.Div(
     style={'backgroundColor': '#f7f7f7', 'padding': '20px'},
     children=[
