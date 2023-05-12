@@ -12,13 +12,12 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import numpy as np  
-from bs4 import BeautifulSoup
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 
 data = pd.read_csv('data.csv')
 
-X = data[['LARGO DE CUERPO', 'AREA','PESO PRENDA']]
+X = data[['LARGO DE CUERPO', 'AREA','PESO PRENDA','DE_MODELO']]
 y = data['Teorica']
 X = pd.get_dummies(X)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
