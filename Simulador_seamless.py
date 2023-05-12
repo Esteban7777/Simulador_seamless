@@ -12,13 +12,13 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import numpy as np  
-from bs4 import BeautifulSoup
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
+from flask import Flask, send_from_directory
 
 data = pd.read_csv('data.csv')
 
-X = data[['LARGO DE CUERPO', 'AREA','PESO PRENDA']]
+X = data[['LARGO DE CUERPO', 'AREA', 'PESO PRENDA']]
 y = data['Teorica']
 X = pd.get_dummies(X)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
@@ -28,6 +28,17 @@ model.fit(X_train, y_train)
 
 external_stylesheets = ['./assets/style.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+@server.route('/')
+def index():
+    # Carga el archivo index.html desde la carpeta "assets"
+    return app.send_static_file('index.html')
+
+@server.route('/assets/<path:path>')
+def serve_static(path):
+    # Sirve archivos estáticos desde la carpeta "assets"
+    return send_from_directory('assets', path)
 
 app.layout = html.Div(
     className="contenedor",
