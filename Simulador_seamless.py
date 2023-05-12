@@ -14,6 +14,7 @@ import pandas as pd
 import numpy as np  
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
+from flask import Flask, send_from_directory
 
 data = pd.read_csv('data.csv')
 
@@ -27,6 +28,17 @@ model.fit(X_train, y_train)
 
 external_stylesheets = ['./assets/style.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
+
+@server.route('/')
+def index():
+    # Carga el archivo index.html desde la carpeta "assets"
+    return app.send_static_file('index.html')
+
+@server.route('/assets/<path:path>')
+def serve_static(path):
+    # Sirve archivos estáticos desde la carpeta "assets"
+    return send_from_directory('assets', path)
 
 app.layout = html.Div(
     className="contenedor",
